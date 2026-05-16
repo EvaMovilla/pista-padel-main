@@ -1,4 +1,5 @@
 const API_BASE = 'http://localhost:8080';
+const API_BASE = 'http://localhost:8080';
 
 document.getElementById('registerForm').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -17,6 +18,38 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   const errorText = document.getElementById('errorText');
   errorMsg.style.display = 'none';
 
+  const telefonoRegex = /^[0-9]{9}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Validación del nombre
+  if (fullName.length < 3) {
+    errorText.textContent = 'El nombre debe tener al menos 3 caracteres.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  // Validación del teléfono
+  if (!telefonoRegex.test(telefono)) {
+    errorText.textContent = 'El teléfono debe tener exactamente 9 números.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  // Validación del email
+  if (!emailRegex.test(email)) {
+    errorText.textContent = 'Introduce un correo electrónico válido.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  // Validación de contraseña mínima
+  if (password.length < 6) {
+    errorText.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  // Validación de contraseñas iguales
   if (password !== confirmPassword) {
     errorText.textContent = 'Las contraseñas no coinciden.';
     errorMsg.style.display = 'block';
@@ -25,10 +58,10 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
   try {
     const response = await fetch(API_BASE + '/pistaPadel/auth/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nombre, apellidos, email, telefono, password })
-  });
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, apellidos, email, telefono, password })
+    });
 
     if (response.status === 201) {
       window.location.href = 'login.html';
