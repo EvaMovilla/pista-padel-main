@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PadelNow | Configurar Pista</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="header">
+  <a href="admin-pistas.html" class="logo-container" style="text-decoration: none;">
+    <img src="img/Logo.png" alt="Logo de PadelNow">
+    <div class="brand-text">
+      <h1>PadelNow <span class="admin-tag">ADMIN</span></h1>
+      <p class="subtitle">Gestión del Club</p>
+    </div>
+  </a>
+  <nav class="top-nav">
+    <a href="admin-pistas.html" class="nav-link">Listado</a>
+    <a href="form-pista.html" class="nav-link nav-btn">+ Nueva Pista</a>
+    <a href="login.html" class="nav-link" style="color: #ef4444;">Salir</a>
+  </nav>
+</header>
+
+  <main class="main-login">
+    <section class="login-container">
+      <div class="message">
+        <p>Introduce los detalles de la pista</p>
+      </div>
+
+      <form id="courtForm">
+        <div class="form-group">
+          <label for="nombre">Nombre de la Pista</label>
+          <input type="text" id="nombre" placeholder="Ej: Pista Central Panorámica" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ubicacion">Ubicación / Zona</label>
+          <input type="text" id="ubicacion" placeholder="Ej: Zona A (Interior)" required>
+        </div>
+
+        <div class="form-group">
+          <label for="precioHora">Precio por Hora (€)</label>
+          <input type="number" id="precioHora" step="0.50" placeholder="20.00" required>
+        </div>
+
+        <div class="form-group">
+          <label for="Id">Eliga un Id</label>
+          <input type="number" id="Id" placeholder="123" required>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="activa" checked>
+          <label for="activa">Pista operativa y visible para usuarios</label>
+        </div>
+
+        <div class="form-actions-row">
+          <button type="submit" class="btn">Guardar Pista</button>
+          <a href="admin-pistas.html" class="secondary-btn" style="width: 100%; text-align: center; margin-top: 10px;">Atras</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

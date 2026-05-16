@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PadelNow | Nueva Reserva</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+ <header class="header">
+  <a href="mis-reservas.html" class="logo-container" style="text-decoration: none;">
+    <img src="img/Logo.png" alt="Logo de PadelNow">
+    <div class="brand-text">
+      <h1>PadelNow</h1>
+      <p class="subtitle">Área de Jugador</p>
+    </div>
+  </a>
+ <nav class="top-nav">
+    <a href="pistas.html" class="nav-link">Pistas</a>
+    <a href="mis-reservas.html" class="nav-link">Mis Reservas</a>
+    <a href="reserva.html" class="nav-link">Nueva Reserva</a>
+    <a href="profile.html" class="nav-link">Mi Perfil</a>
+    <a href="login.html" class="nav-link" style="color: #ef4444;">Salir</a>
+</nav>
+</header>
+
+  <main class="main-login">
+    <section class="login-container">
+      <div class="message">
+        <p>Selecciona tu pista y horario</p>
+      </div>
+
+      <form id="reservaForm" action="mis-reservas.html" method="get">
+        
+        <div class="form-group">
+          <label for="courtId">Pista</label>
+          <select id="courtId" name="courtId" required>
+            <option value="" disabled selected>Elige una pista...</option>
+            <option value="1">Pista Central (Cristal)</option>
+            <option value="2">Pista 2 (Muro)</option>
+            <option value="3">Pista 3 (Panorámica)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Fecha</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="startTime">Hora de inicio</label>
+          <input type="time" 
+          id="startTime" 
+          name="startTime" 
+          required>
+        </div>
+
+        <div class="form-group">
+          <label for="durationMinutes">Duración</label>
+          <select id="durationMinutes" name="durationMinutes" required>
+            <option value="60">60 minutos</option>
+            <option value="90" selected>90 minutos</option>
+            <option value="120">120 minutos</option>
+          </select>
+        </div>
+
+        <button type="submit" href="mis-reservas.html" class="btn">Confirmar Reserva</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PadelNow | Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="header">
+  <a href="index.html" class="logo-container" style="text-decoration: none;">
+    <img src="img/Logo.png" alt="Logo de PadelNow">
+    <div class="brand-text">
+      <h1>PadelNow</h1>
+      <p class="subtitle">Reserva tu pista en segundos</p>
+    </div>
+  </a>
+  <nav class="top-nav">
+    <a href="login.html" class="nav-link">Iniciar sesión</a>
+    <a href="register.html" class="nav-link nav-btn">Registrarse</a>
+  </nav>
+</header>
+
+  <main class="main-login">
+    <section class="login-container">
+      
+      <div class="message">
+        <p>Inicia sesión para gestionar tus reservas</p>
+      </div>
+      <div id="errorMsg" class="message error-message" style="display:none;">
+        <p id="errorText">Correo o contraseña incorrectos</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="tuemail@ejemplo.com"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="********"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+
+      <p class="link-text">
+        ¿No tienes cuenta? <a href="register.html">Regístrate</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
