@@ -1,14 +1,10 @@
 const API_BASE = 'http://localhost:8080';
-const API_BASE = 'http://localhost:8080';
 
 document.getElementById('registerForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
-  const fullName = document.getElementById('name').value.trim();
-  const spaceIdx = fullName.indexOf(' ');
-  const nombre = spaceIdx > 0 ? fullName.substring(0, spaceIdx) : fullName;
-  const apellidos = spaceIdx > 0 ? fullName.substring(spaceIdx + 1).trim() : '-';
-
+  const nombre = document.getElementById('name').value.trim();
+  const apellidos = document.getElementById('apellidos').value.trim();
   const telefono = document.getElementById('phone').value.trim();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
@@ -21,35 +17,36 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   const telefonoRegex = /^[0-9]{9}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Validación del nombre
-  if (fullName.length < 3) {
+  if (nombre.length < 3) {
     errorText.textContent = 'El nombre debe tener al menos 3 caracteres.';
     errorMsg.style.display = 'block';
     return;
   }
 
-  // Validación del teléfono
+  if (apellidos.length < 3) {
+    errorText.textContent = 'Los apellidos deben tener al menos 3 caracteres.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+
   if (!telefonoRegex.test(telefono)) {
     errorText.textContent = 'El teléfono debe tener exactamente 9 números.';
     errorMsg.style.display = 'block';
     return;
   }
 
-  // Validación del email
   if (!emailRegex.test(email)) {
     errorText.textContent = 'Introduce un correo electrónico válido.';
     errorMsg.style.display = 'block';
     return;
   }
 
-  // Validación de contraseña mínima
   if (password.length < 6) {
     errorText.textContent = 'La contraseña debe tener al menos 6 caracteres.';
     errorMsg.style.display = 'block';
     return;
   }
 
-  // Validación de contraseñas iguales
   if (password !== confirmPassword) {
     errorText.textContent = 'Las contraseñas no coinciden.';
     errorMsg.style.display = 'block';
