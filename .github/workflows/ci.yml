@@ -26,9 +26,9 @@ jobs:
           java-version: 21
 
       - name: Dar permisos a Maven Wrapper
-        working-directory: pista-padel-main/pista-padel-backend
+        working-directory: pista-padel-backend
         run: chmod +x mvnw
 
       - name: Ejecutar tests
-        working-directory: pista-padel-main/pista-padel-backend
+        working-directory: pista-padel-backend
         run: ./mvnw test
