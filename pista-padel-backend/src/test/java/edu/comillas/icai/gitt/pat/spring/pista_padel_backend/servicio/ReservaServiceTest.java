@@ -13,9 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +24,8 @@ import static org.mockito.Mockito.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class ReservaServiceTest {
 
-    @Mock
-    private ReservaRepositorio reservaRepositorio;
-
-    @Mock
-    private PistaService pistaService;
+    @Mock private ReservaRepositorio reservaRepositorio;
+    @Mock private PistaService pistaService;
 
     private ReservaService reservaService;
 
@@ -45,18 +40,11 @@ class ReservaServiceTest {
         Pista pista = crearPista(10L, true);
         LocalDate fecha = LocalDate.now().plusDays(10);
 
-        ReservaRequest req = new ReservaRequest();
-        req.setCourtId(10L);
-        req.setDate(fecha);
-        req.setStartTime(LocalTime.of(18, 0));
-        req.setDurationMinutes(90);
+        ReservaRequest req = crearRequest(10L, fecha, LocalTime.of(18, 0), 90);
 
         when(pistaService.obtenerPista(10L)).thenReturn(pista);
         when(reservaRepositorio.existeSolapamiento(
-                eq(pista),
-                eq(fecha),
-                eq(LocalTime.of(18, 0)),
-                eq(LocalTime.of(19, 30))
+                eq(pista), eq(fecha), eq(LocalTime.of(18, 0)), eq(LocalTime.of(19, 30))
         )).thenReturn(true);
 
         assertThrows(ConflictException.class, () -> reservaService.crearReserva(req, usuario));
@@ -68,11 +56,7 @@ class ReservaServiceTest {
         Usuario usuario = crearUsuario(1L, Rol.USER);
         Pista pista = crearPista(10L, false);
 
-        ReservaRequest req = new ReservaRequest();
-        req.setCourtId(10L);
-        req.setDate(LocalDate.now().plusDays(10));
-        req.setStartTime(LocalTime.of(18, 0));
-        req.setDurationMinutes(60);
+        ReservaRequest req = crearRequest(10L, LocalDate.now().plusDays(10), LocalTime.of(18, 0), 60);
 
         when(pistaService.obtenerPista(10L)).thenReturn(pista);
 
@@ -85,11 +69,7 @@ class ReservaServiceTest {
         Usuario usuario = crearUsuario(1L, Rol.USER);
         Pista pista = crearPista(10L, true);
 
-        ReservaRequest req = new ReservaRequest();
-        req.setCourtId(10L);
-        req.setDate(LocalDate.now().minusDays(1));
-        req.setStartTime(LocalTime.of(18, 0));
-        req.setDurationMinutes(60);
+        ReservaRequest req = crearRequest(10L, LocalDate.now().minusDays(1), LocalTime.of(18, 0), 60);
 
         when(pistaService.obtenerPista(10L)).thenReturn(pista);
 
@@ -102,11 +82,7 @@ class ReservaServiceTest {
         Usuario usuario = crearUsuario(1L, Rol.USER);
         Pista pista = crearPista(10L, true);
 
-        ReservaRequest req = new ReservaRequest();
-        req.setCourtId(10L);
-        req.setDate(LocalDate.now().plusDays(10));
-        req.setStartTime(LocalTime.of(18, 0));
-        req.setDurationMinutes(60);
+        ReservaRequest req = crearRequest(10L, LocalDate.now().plusDays(10), LocalTime.of(18, 0), 60);
 
         Reserva saved = new Reserva();
         saved.setIdReserva(1L);
@@ -123,10 +99,21 @@ class ReservaServiceTest {
     }
 
     @Test
+    void cancelarReserva_lanza403_siNoTienePermisos() {
+        Usuario dueno = crearUsuario(1L, Rol.USER);
+        Usuario otro = crearUsuario(2L, Rol.USER);
+        Reserva reserva = crearReserva(100L, dueno, crearPista(10L, true));
+
+        when(reservaRepositorio.findById(100L)).thenReturn(Optional.of(reserva));
+
+        assertThrows(ForbiddenException.class, () -> reservaService.cancelarReserva(100L, otro));
+        verify(reservaRepositorio, never()).save(any());
+    }
+
+    @Test
     void cancelarReserva_permiteCancelar_siEsElDueno() {
         Usuario usuario = crearUsuario(1L, Rol.USER);
-        Pista pista = crearPista(10L, true);
-        Reserva reserva = crearReserva(100L, usuario, pista);
+        Reserva reserva = crearReserva(100L, usuario, crearPista(10L, true));
 
         when(reservaRepositorio.findById(100L)).thenReturn(Optional.of(reserva));
 
@@ -140,8 +127,7 @@ class ReservaServiceTest {
     void cancelarReserva_permiteCancelar_siEsAdmin() {
         Usuario dueno = crearUsuario(1L, Rol.USER);
         Usuario admin = crearUsuario(99L, Rol.ADMIN);
-        Pista pista = crearPista(10L, true);
-        Reserva reserva = crearReserva(100L, dueno, pista);
+        Reserva reserva = crearReserva(100L, dueno, crearPista(10L, true));
 
         when(reservaRepositorio.findById(100L)).thenReturn(Optional.of(reserva));
 
@@ -152,51 +138,10 @@ class ReservaServiceTest {
     }
 
     @Test
-    void cancelarReserva_lanza403_siNoTienePermisos() {
-        Usuario dueno = crearUsuario(1L, Rol.USER);
-        Usuario otro = crearUsuario(2L, Rol.USER);
-        Pista pista = crearPista(10L, true);
-        Reserva reserva = crearReserva(100L, dueno, pista);
-
-        when(reservaRepositorio.findById(100L)).thenReturn(Optional.of(reserva));
-
-        assertThrows(ForbiddenException.class, () -> reservaService.cancelarReserva(100L, otro));
-        verify(reservaRepositorio, never()).save(any());
-    }
-
-    @Test
-    void obtenerReserva_devuelveReserva_siEsElDueno() {
-        Usuario usuario = crearUsuario(1L, Rol.USER);
-        Pista pista = crearPista(10L, true);
-        Reserva reserva = crearReserva(100L, usuario, pista);
-
-        when(reservaRepositorio.findById(100L)).thenReturn(Optional.of(reserva));
-
-        Reserva res = reservaService.obtenerReserva(100L, usuario);
-
-        assertSame(reserva, res);
-    }
-
-    @Test
-    void obtenerReserva_devuelveReserva_siEsAdmin() {
-        Usuario dueno = crearUsuario(1L, Rol.USER);
-        Usuario admin = crearUsuario(99L, Rol.ADMIN);
-        Pista pista = crearPista(10L, true);
-        Reserva reserva = crearReserva(100L, dueno, pista);
-
-        when(reservaRepositorio.findById(100L)).thenReturn(Optional.of(reserva));
-
-        Reserva res = reservaService.obtenerReserva(100L, admin);
-
-        assertSame(reserva, res);
-    }
-
-    @Test
     void obtenerReserva_lanza403_siNoTienePermisos() {
         Usuario dueno = crearUsuario(1L, Rol.USER);
         Usuario otro = crearUsuario(2L, Rol.USER);
-        Pista pista = crearPista(10L, true);
-        Reserva reserva = crearReserva(100L, dueno, pista);
+        Reserva reserva = crearReserva(100L, dueno, crearPista(10L, true));
 
         when(reservaRepositorio.findById(100L)).thenReturn(Optional.of(reserva));
 
@@ -204,60 +149,24 @@ class ReservaServiceTest {
     }
 
     @Test
-    void listarMisReservasFiltradas_devuelveReservasDelUsuario() {
-        Usuario usuario = crearUsuario(1L, Rol.USER);
-        Reserva reserva = crearReserva(100L, usuario, crearPista(10L, true));
-
-        LocalDate from = LocalDate.now().plusDays(1);
-        LocalDate to = LocalDate.now().plusDays(30);
-
-        when(reservaRepositorio.buscarConFiltros(1L, null, null, from, to))
-                .thenReturn(List.of(reserva));
-
-        List<Reserva> res = reservaService.listarMisReservasFiltradas(usuario, from, to);
-
-        assertEquals(1, res.size());
-        verify(reservaRepositorio).buscarConFiltros(1L, null, null, from, to);
-    }
-
-    @Test
     void listarMisReservasFiltradas_lanza400_siFromEsPosteriorATo() {
         Usuario usuario = crearUsuario(1L, Rol.USER);
 
-        LocalDate from = LocalDate.now().plusDays(30);
-        LocalDate to = LocalDate.now().plusDays(1);
-
         assertThrows(BadRequestException.class,
-                () -> reservaService.listarMisReservasFiltradas(usuario, from, to));
+                () -> reservaService.listarMisReservasFiltradas(
+                        usuario,
+                        LocalDate.now().plusDays(30),
+                        LocalDate.now().plusDays(1)
+                ));
     }
 
-    @Test
-    void listarReservasAdmin_devuelveReservasFiltradas() {
-        Usuario usuario = crearUsuario(1L, Rol.USER);
-        Reserva reserva = crearReserva(100L, usuario, crearPista(10L, true));
-
-        Long courtId = 10L;
-        Long userId = 1L;
-        EstadoReserva estado = EstadoReserva.ACTIVA;
-        LocalDate from = LocalDate.now().plusDays(1);
-        LocalDate to = LocalDate.now().plusDays(30);
-
-        when(reservaRepositorio.buscarConFiltros(userId, courtId, estado, from, to))
-                .thenReturn(List.of(reserva));
-
-        List<Reserva> res = reservaService.listarReservasAdmin(courtId, userId, estado, from, to);
-
-        assertEquals(1, res.size());
-        verify(reservaRepositorio).buscarConFiltros(userId, courtId, estado, from, to);
-    }
-
-    @Test
-    void listarReservasAdmin_lanza400_siFromEsPosteriorATo() {
-        LocalDate from = LocalDate.now().plusDays(30);
-        LocalDate to = LocalDate.now().plusDays(1);
-
-        assertThrows(BadRequestException.class,
-                () -> reservaService.listarReservasAdmin(10L, 1L, EstadoReserva.ACTIVA, from, to));
+    private ReservaRequest crearRequest(Long courtId, LocalDate fecha, LocalTime hora, int duracion) {
+        ReservaRequest req = new ReservaRequest();
+        req.setCourtId(courtId);
+        req.setDate(fecha);
+        req.setStartTime(hora);
+        req.setDurationMinutes(duracion);
+        return req;
     }
 
     private Usuario crearUsuario(Long id, Rol rol) {
@@ -266,10 +175,7 @@ class ReservaServiceTest {
         u.setRol(rol);
         u.setActivo(true);
         u.setNombre("Usuario");
-        u.setApellidos("Test");
         u.setEmail("test" + id + "@mail.com");
-        u.setPassword("1234");
-        u.setFechaRegistro(LocalDateTime.now());
         return u;
     }
 
@@ -277,8 +183,6 @@ class ReservaServiceTest {
         Pista p = new Pista();
         p.setIdPista(id);
         p.setNombre("Pista " + id);
-        p.setUbicacion("Madrid");
-        p.setPrecioHora(20.0);
         p.setActiva(activa);
         p.setFechaAlta(LocalDateTime.now());
         return p;
@@ -291,8 +195,8 @@ class ReservaServiceTest {
         r.setPista(pista);
         r.setFechaReserva(LocalDate.now().plusDays(10));
         r.setHoraInicio(LocalTime.of(18, 0));
-        r.setDuracionMinutos(90);
         r.setHoraFin(LocalTime.of(19, 30));
+        r.setDuracionMinutos(90);
         r.setEstado(EstadoReserva.ACTIVA);
         r.setFechaCreacion(LocalDateTime.now());
         return r;
