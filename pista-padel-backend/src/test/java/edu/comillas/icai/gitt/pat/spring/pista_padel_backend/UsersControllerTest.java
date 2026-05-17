@@ -1,5 +1,6 @@
 package edu.comillas.icai.gitt.pat.spring.pista_padel_backend;
 
+import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.ReservaRepositorio;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.Rol;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.Usuario;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.UsuarioRepositorio;
@@ -26,6 +27,7 @@ class UsersControllerTest {
 
     @Autowired MockMvc mvc;
     @Autowired UsuarioRepositorio usuarioRepo;
+    @Autowired ReservaRepositorio reservaRepo;
     @Autowired PasswordEncoder passwordEncoder;
 
     private Usuario admin;
@@ -34,6 +36,7 @@ class UsersControllerTest {
 
     @BeforeEach
     void setUp() {
+        reservaRepo.deleteAll();
         usuarioRepo.deleteAll();
 
         admin = new Usuario();

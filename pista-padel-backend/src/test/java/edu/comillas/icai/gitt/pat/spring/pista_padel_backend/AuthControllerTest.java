@@ -1,5 +1,6 @@
 package edu.comillas.icai.gitt.pat.spring.pista_padel_backend;
 
+import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.ReservaRepositorio;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.Rol;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.Usuario;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.UsuarioRepositorio;
@@ -25,12 +26,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthControllerTest {
 
-    @Autowired MockMvc mvc;
-    @Autowired UsuarioRepositorio usuarioRepo;
-    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired
+    MockMvc mvc;
+
+    @Autowired
+    UsuarioRepositorio usuarioRepo;
+
+    @Autowired
+    ReservaRepositorio reservaRepo;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
+
+        // IMPORTANTE:
+        // Primero borrar reservas y luego usuarios
+        // para evitar errores de foreign key
+        reservaRepo.deleteAll();
         usuarioRepo.deleteAll();
 
         Usuario u = new Usuario();
@@ -42,11 +56,13 @@ class AuthControllerTest {
         u.setRol(Rol.USER);
         u.setActivo(true);
         u.setFechaRegistro(LocalDateTime.now());
+
         usuarioRepo.save(u);
     }
 
     @Test
     void register_ok_retorna201YGuardaUsuario() throws Exception {
+
         mvc.perform(post("/pistaPadel/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -62,6 +78,7 @@ class AuthControllerTest {
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("idUsuario")));
 
         Usuario guardado = usuarioRepo.findByEmail("luis@test.com").orElse(null);
+
         assertThat(guardado).isNotNull();
         assertThat(guardado.getRol()).isEqualTo(Rol.USER);
         assertThat(guardado.isActivo()).isTrue();
@@ -70,6 +87,7 @@ class AuthControllerTest {
 
     @Test
     void register_emailDuplicado_retorna409() throws Exception {
+
         mvc.perform(post("/pistaPadel/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -87,6 +105,7 @@ class AuthControllerTest {
 
     @Test
     void register_datosInvalidos_retorna400() throws Exception {
+
         mvc.perform(post("/pistaPadel/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -102,6 +121,7 @@ class AuthControllerTest {
 
     @Test
     void login_ok_retorna200YPermiteAccederAMeConLaSesion() throws Exception {
+
         MvcResult result = mvc.perform(post("/pistaPadel/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -114,7 +134,9 @@ class AuthControllerTest {
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Login correcto")))
                 .andReturn();
 
-        MockHttpSession session = (MockHttpSession) result.getRequest().getSession(false);
+        MockHttpSession session =
+                (MockHttpSession) result.getRequest().getSession(false);
+
         assertThat(session).isNotNull();
 
         mvc.perform(get("/pistaPadel/auth/me").session(session))
@@ -126,6 +148,7 @@ class AuthControllerTest {
 
     @Test
     void login_credencialesIncorrectas_retorna401() throws Exception {
+
         mvc.perform(post("/pistaPadel/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -140,12 +163,14 @@ class AuthControllerTest {
 
     @Test
     void me_sinAutenticar_retorna401() throws Exception {
+
         mvc.perform(get("/pistaPadel/auth/me"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void logout_conSesion_retorna200() throws Exception {
+
         MvcResult result = mvc.perform(post("/pistaPadel/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -157,7 +182,9 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        MockHttpSession session = (MockHttpSession) result.getRequest().getSession(false);
+        MockHttpSession session =
+                (MockHttpSession) result.getRequest().getSession(false);
+
         assertThat(session).isNotNull();
 
         mvc.perform(post("/pistaPadel/auth/logout").session(session))
