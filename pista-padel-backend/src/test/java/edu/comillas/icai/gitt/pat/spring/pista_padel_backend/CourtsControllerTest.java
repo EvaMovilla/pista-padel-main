@@ -184,10 +184,9 @@ class CourtsControllerTest {
 
     @Test
     @WithMockUser(username = "admin@test.com")
-    void deleteCourt_conReservasPasadas_borradoFisico() throws Exception {
+    void deleteCourt_conReservasPasadas_desactivacionLogica() throws Exception {
         Pista pista = pistaRepo.findById(pistaId).orElseThrow();
 
-        // Reserva en el pasado → no bloquea borrado físico
         Reserva reserva = new Reserva();
         reserva.setPista(pista);
         reserva.setUsuario(cliente);
@@ -202,7 +201,8 @@ class CourtsControllerTest {
         mvc.perform(delete("/pistaPadel/courts/" + pistaId))
                 .andExpect(status().isNoContent());
 
-        assertThat(pistaRepo.findById(pistaId)).isEmpty();
+        Pista resultado = pistaRepo.findById(pistaId).orElseThrow();
+        assertThat(resultado.isActiva()).isFalse();
     }
 
     @Test
