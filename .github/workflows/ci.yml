@@ -15,10 +15,6 @@ jobs:
   backend-tests:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: pista-padel-backend
-
     steps:
       - name: Descargar código
         uses: actions/checkout@v4
@@ -30,7 +26,9 @@ jobs:
           java-version: 21
 
       - name: Dar permisos a Maven Wrapper
+        working-directory: pista-padel-main/pista-padel-backend
         run: chmod +x mvnw
 
       - name: Ejecutar tests
+        working-directory: pista-padel-main/pista-padel-backend
         run: ./mvnw test
