@@ -1,0 +1,34 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Dar permisos a Maven Wrapper
+        working-directory: pista-padel-backend
+        run: chmod +x mvnw
+
+      - name: Ejecutar tests
+        working-directory: pista-padel-backend
+        run: ./mvnw test

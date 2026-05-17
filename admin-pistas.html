@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PadelNow | Admin Pistas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="header">
+  <a href="admin-pistas.html" class="logo-container" style="text-decoration: none;">
+    <img src="img/Logo.png" alt="Logo de PadelNow">
+    <div class="brand-text">
+      <h1>PadelNow <span class="admin-tag">ADMIN</span></h1>
+      <p class="subtitle">Gestión del Club</p>
+    </div>
+  </a>
+  <nav class="top-nav">
+    <a href="admin-pistas.html" class="nav-link">Listado</a>
+    <a href="form-pista.html" class="nav-link nav-btn">+ Nueva Pista</a>
+    <a href="login.html" class="nav-link" style="color: #ef4444;">Salir</a>
+  </nav>
+</header>
+
+  <main class="admin-page">
+    <section class="admin-header-section">
+      <h2>Listado de Pistas</h2>
+      <p>Controla la disponibilidad y precios de las pistas del club.</p>
+    </section>
+
+    <div class="table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Ubicación</th>
+            <th>Precio/h</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Pista Central</strong></td>
+            <td>Nave Principal</td>
+            <td>20.00€</td>
+            <td><span class="badge badge-activa">ACTIVA</span></td>
+            <td class="actions-cell">
+              <a href="form-pista.html?id=1" class="action-btn edit">Editar</a>
+              <button class="action-btn delete" onclick="confirmDelete(1, false)">Eliminar</button>
+            </td>
+          </tr>
+          <tr class="row-inactive">
+            <td>2</td>
+            <td><strong>Pista 2 - Muro</strong></td>
+            <td>Zona Exterior</td>
+            <td>15.00€</td>
+            <td><span class="badge badge-cancelada">INACTIVA</span></td>
+            <td class="actions-cell">
+              <a href="form-pista.html?id=2" class="action-btn edit">Editar</a>
+              <button class="action-btn delete" onclick="confirmDelete(2, true)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    function confirmDelete(id, tieneReservas) {
+      if (tieneReservas) {
+        alert("Aviso: Esta pista tiene reservas futuras. Al 'Eliminar', se desactivará lógicamente (no será visible para usuarios) pero se mantendrá en la base de datos para no perder las reservas.");
+      } else {
+        confirm("¿Estás seguro de eliminar físicamente la pista " + id + "? Esta acción no se puede deshacer.");
+      }
+    }
+  </script>
+</body>
+</html>

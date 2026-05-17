@@ -1,0 +1,749 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: rgb(27, 27, 73);
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.header {
+  width: 100%;
+  padding: 15px 30px;
+  background-color: rgb(12, 12, 60);
+  border-bottom: 1px solid #1e293b;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-container img {
+  width: 45px;
+  height: 45px;
+}
+
+.brand-text h1 {
+  font-size: 22px;
+  color: #22c55e;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: lightblue;
+}
+
+/* MAIN*/
+.main-login {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* CAJA LOGIN */
+.login-container {
+  background-color: rgb(49, 49, 97);
+  padding: 30px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 350px;
+  box-shadow: 0 15px 40px black;
+  text-align: center;
+}
+
+/* MENSAJE */
+.message p {
+  color: lightblue;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* FORMULARIO */
+.form-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: lightblue;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: rgb(153, 153, 186);
+  color: white;
+  
+}
+
+/* EFECTO FOCUS */
+.form-group input:focus {
+  outline: none;
+  border: 1px solid #22c55e;
+  box-shadow: 0 0 5px rgb(4, 47, 4);
+}
+
+/* BOTÓN */
+.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #22c55e;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  }
+
+/* HOVER BOTÓN */
+.btn:hover {
+  background-color: #16a34a;
+  transform: translateY(-1px);
+}
+
+/* LINK */
+.link-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: lightblue;
+}
+
+.link-text a {
+  color: #22c55e;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link-text a:hover {
+  text-decoration: underline;
+}
+
+/* AVATAR PERFIL */
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-avatar img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #22c55e;
+  box-shadow: 0 4px 12px black;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #22c55e;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+    display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+/* RESPONSIVE */
+@media (max-width: 400px) {
+  .login-container {
+    padding: 20px;
+  }
+
+  .brand-text h1 {
+    font-size: 18px;
+  }
+}
+
+/* NAV HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-link {
+  color: rgb(178, 178, 221);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  color: #22c55e;
+}
+
+.nav-btn {
+  background-color: #22c55e;
+  color: rgb(19, 19, 69);
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.nav-btn:hover {
+  background-color: #16a34a;
+  color: rgb(19, 19, 69);
+  text-decoration: none;
+}
+
+/* HOME */
+.home-page {
+  width: 100%;
+}
+
+/* HERO */
+.hero {
+  height: 78vh;
+  background-image: url("img/Inicio.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(2, 6, 23, 0.88), rgba(2, 6, 23, 0.45));
+  display: flex;
+  align-items: center;
+  padding: 0 60px;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.hero-tag {
+  color: #22c55e;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero-content h2 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+  color: white;
+}
+
+.hero-text {
+  font-size: 17px;
+  color: lightblue;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.secondary-btn {
+  display: inline-block;
+  padding: 12px 18px;
+  border: 1px solid lightblue;
+  border-radius: 8px;
+  background-color: transparent;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  }
+
+.secondary-btn:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+/* SECTIONS */
+.gallery-section{
+  padding: 60px 40px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.section-title h3 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.section-title p {
+  color: lightblue;
+  font-size: 15px;
+}
+
+/* CARDS */
+.intro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.info-card {
+  background-color: rgb(9, 9, 41);
+  border: 1px solid rgb(25, 25, 54);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.info-card h4 {
+  color: #22c55e;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.info-card p {
+  color: lightblue;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* GALLERY */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* CTA */
+.cta-box {
+  text-align: center;
+}
+
+.cta-box p {
+  color: lightblue;
+  margin-bottom: 20px;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .intro-grid,
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 70vh;
+  }
+
+  .hero-overlay {
+    padding: 50px 24px;
+  }
+
+  .hero-content h2 {
+    font-size: 34px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .top-nav {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 520px) {
+  .intro-section,
+  .gallery-section
+   {
+    padding: 40px 20px;
+  }
+
+  .hero-content h2 {
+    font-size: 28px;
+  }
+
+  .hero-text {
+    font-size: 15px;
+  }
+}
+
+/* --- AÑADIDOS PARA RESERVAS --- */
+
+/* Estilos para los Selects (para que coincidan con los inputs existentes) */
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: rgb(153, 153, 186);
+  color: white; /* Ajuste para que el texto sea visible */
+  appearance: none; /* Quita la flecha por defecto en algunos navegadores */
+}
+
+.form-group select:focus {
+  outline: none;
+  border: 1px solid #22c55e;
+  box-shadow: 0 0 5px rgb(4, 47, 4);
+}
+
+.form-group select option {
+  background-color: rgb(49, 49, 97);
+  color: white;
+}
+
+/* Layout de la página Mis Reservas */
+.reservas-page {
+  padding: 20px 40px 60px 40px;
+  flex: 1;
+}
+
+.reservas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Tarjeta de Reserva */
+.reserva-card {
+  background-color: rgb(49, 49, 97); /* Mismo fondo que la caja de login */
+  border: 1px solid rgb(25, 25, 54);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.reserva-card.cancelada {
+  opacity: 0.7;
+}
+
+.reserva-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+  padding-bottom: 10px;
+}
+
+.reserva-header h4 {
+  color: #22c55e;
+  font-size: 16px;
+}
+
+.reserva-body p {
+  color: lightblue;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.reserva-footer {
+  margin-top: 15px;
+}
+
+/* Etiquetas de estado (Badges) */
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  border:1px solid;
+}
+
+.badge-activa {
+
+  color: #22c55e;
+  border-color: #22c55e;
+}
+
+.badge-cancelada {
+
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+/* Botón de Cancelar */
+.btn-cancelar {
+  background-color: transparent;
+  color: #ff0000;
+  border: 1px solid #ff0000;
+}
+
+.btn-cancelar:hover {
+  background-color: #ff0000;
+  color: white;
+}
+
+/* --- ESTILOS ADMIN --- */
+
+.admin-tag {
+  font-size: 10px;
+  background-color: #22c55e;
+  color: #0c0c3c;
+  padding: 2px 6px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.admin-page {
+  padding: 40px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.admin-header-section {
+  margin-bottom: 30px;
+}
+
+.admin-header-section h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+/* Quitar el fondo de la caja contenedora para que las tarjetas se vean sueltas */
+.table-container {
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Evitar que la tabla obligue a las filas a pegarse */
+.admin-table {
+  border-collapse: separate;
+}
+/* Rompemos el formato tabla tradicional */
+.admin-table, 
+.admin-table tbody, 
+.admin-table tr, 
+.admin-table td {
+  display: block;
+  width: 100%;
+}
+
+/* Fuerza a ocultar la cabecera por completo */
+.admin-table thead {
+  display: none !important;
+}
+
+/* Diseño de cada fila como tarjeta (¡Añadimos tbody para que ignore la cabecera!) */
+.admin-table tbody tr {
+  margin-bottom: 25px;
+  background-color: rgb(49, 49, 97);
+  border-radius: 12px;
+  border: 1px solid rgb(25, 25, 54);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  padding: 10px 0;
+}
+
+/* Fila inactiva atenuada */
+.row-inactive {
+  opacity: 0.6;
+}
+
+/* Alineación de las celdas juntas (sin separación extrema) */
+.admin-table td {
+  display: flex;
+  justify-content: flex-start; /* <--- Esto agrupa el texto hacia la izquierda */
+  align-items: center;
+  padding: 12px 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 15px;
+}
+
+.admin-table td:last-child {
+  border-bottom: none;
+}
+
+/* Etiquetas inyectadas (ID, Nombre, etc.) */
+.admin-table td::before {
+  font-weight: bold;
+  color: #22c55e;
+  font-size: 13px;
+  text-transform: uppercase;
+  min-width: 130px; /* <--- Esto crea una columna invisible que alinea todas las etiquetas */
+  margin-right: 15px;
+}
+
+/* Textos de cada etiqueta */
+.admin-table td:nth-child(1)::before { content: "ID"; }
+.admin-table td:nth-child(2)::before { content: "Nombre"; }
+.admin-table td:nth-child(3)::before { content: "Ubicación"; }
+.admin-table td:nth-child(4)::before { content: "Precio/h"; }
+.admin-table td:nth-child(5)::before { content: "Estado"; }
+.admin-table td:nth-child(6)::before { content: "Acciones"; }
+
+/* Botones alineados a la izquierda junto al texto */
+.actions-cell {
+  gap: 10px;
+}
+
+/* Botones de Acción en Tabla */
+.actions-cell {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.action-btn.edit {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid #3b82f6;
+}
+
+.action-btn.delete {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid #ef4444;
+}
+
+.action-btn:hover {
+  filter: brightness(1.2);
+}
+
+/* Checkbox Styling */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.checkbox-group input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  font-size: 14px;
+  cursor: pointer;
+}
+/* =========================
+   PERSONA 2 - PISTAS
+========================= */
+
+.nav-link.active {
+  color: #22c55e;
+}
+
+.pistas-page,
+.detalle-page {
+  width: 100%;
+  flex: 1;
+  padding: 40px 30px 60px 30px;
+}
+
+.pistas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pista-card {
+  background-color: rgb(49, 49, 97);
+  border: 1px solid rgb(25, 25, 54);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.pista-card img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+}
+
+.pista-card-content {
+  padding: 18px;
+}
+
+.pista-card-content h4 {
+  color: #22c55e;
+  margin-bottom: 10px;
+}
+
+.pista-info,
+.pista-price,
+.pista-description {
+  color: lightblue;
+  margin-bottom: 8px;
+}
+
+.detalle-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  background-color: rgb(49, 49, 97);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.detalle-card img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.detalle-info h2 {
+  color: #22c55e;
+}
+
