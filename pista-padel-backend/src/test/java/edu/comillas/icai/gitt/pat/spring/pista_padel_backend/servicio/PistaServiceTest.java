@@ -177,6 +177,7 @@ class PistaServiceTest {
         assertEquals(409, ex.getStatusCode().value());
     }
 
+
     @Test
     void delete_siTieneReservas_haceBorradoLogico() {
 
@@ -191,7 +192,7 @@ class PistaServiceTest {
 
         pistaService.delete(1L);
 
-        assertFalse(pista.getActiva());
+        assertFalse(pista.isActiva());
 
         verify(pistaRepositorio).save(pista);
 
