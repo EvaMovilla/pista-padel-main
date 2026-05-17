@@ -2,9 +2,9 @@ package edu.comillas.icai.gitt.pat.spring.pista_padel_backend.servicio;
 
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.dto.PistaRequest;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.dto.PistaUpdateRequest;
-import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.EstadoReserva;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.Pista;
 import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.PistaRepositorio;
+import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.ReservaRepositorio;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.ReservaRepositorio;
-import java.time.LocalDate;
-
 
 @Service
 public class PistaService {
@@ -31,16 +28,15 @@ public class PistaService {
         this.reservaRepo = reservaRepo;
     }
 
-    // ===== Lo que ya tenías =====
     public Pista crearPista(PistaRequest request) {
         if (pistaRepo.existsByNombre(request.getNombre())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El nombre de la pista ya existe"); // 409
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El nombre de la pista ya existe");
         }
 
         Pista pista = new Pista();
         pista.setNombre(request.getNombre());
         pista.setUbicacion(request.getUbicacion());
-        pista.setPrecioHora(request.getPrecioHora()); // Double
+        pista.setPrecioHora(request.getPrecioHora());
         pista.setActiva(request.getActiva() != null ? request.getActiva() : true);
         pista.setFechaAlta(LocalDateTime.now());
 
@@ -71,12 +67,13 @@ public class PistaService {
 
         if (req.getNombre() != null && !req.getNombre().equalsIgnoreCase(p.getNombre())) {
             if (pistaRepo.existsByNombre(req.getNombre())) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Nombre de pista duplicado"); // 409
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Nombre de pista duplicado");
             }
             p.setNombre(req.getNombre());
         }
+
         if (req.getUbicacion() != null) p.setUbicacion(req.getUbicacion());
-        if (req.getPrecioHora() != null) p.setPrecioHora(req.getPrecioHora()); // Double
+        if (req.getPrecioHora() != null) p.setPrecioHora(req.getPrecioHora());
         if (req.getActiva() != null) p.setActiva(req.getActiva());
 
         log.info("Pista {} actualizada", id);
@@ -87,22 +84,15 @@ public class PistaService {
     public void delete(Long id) {
         Pista p = obtenerPista(id);
 
-        // Comprobar si hay reservas futuras activas
-        boolean tieneReservasFuturas = reservaRepo
-                .existsByPista_IdPistaAndFechaReservaAfterAndEstado(
-                        id, LocalDate.now(), EstadoReserva.ACTIVA
-                );
+        boolean tieneReservas = reservaRepo.existsByPista_IdPista(id);
 
-        if (tieneReservasFuturas) {
-            // Desactivación lógica en lugar de borrado físico
+        if (tieneReservas) {
             p.setActiva(false);
-            log.info("Pista desactivada lógicamente (tiene reservas futuras), id={}", id);
+            pistaRepo.save(p);
+            log.info("Pista desactivada lógicamente porque tiene reservas, id={}", id);
         } else {
-            // Eliminar reservas pasadas antes del borrado físico (evita violación de FK)
-            reservaRepo.deleteByPista_IdPista(id);
             pistaRepo.delete(p);
-            log.info("Pista eliminada físicamente, id={}", id);
+            log.info("Pista eliminada físicamente porque no tiene reservas, id={}", id);
         }
     }
-
 }

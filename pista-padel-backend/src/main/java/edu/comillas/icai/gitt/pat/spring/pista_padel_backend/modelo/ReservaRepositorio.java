@@ -1,6 +1,5 @@
 package edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo;
 
-import edu.comillas.icai.gitt.pat.spring.pista_padel_backend.modelo.Reserva;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
@@ -25,8 +24,6 @@ public interface ReservaRepositorio extends JpaRepository<Reserva, Long> {
     );
 
     List<Reserva> findByUsuarioIdUsuarioOrderByFechaReservaAscHoraInicioAsc(Long idUsuario);
-
-    // --- MÉTODOS VIRGINIA ---
 
     List<Reserva> findByUsuario_IdUsuarioAndFechaReservaBetween(
             Long idUsuario, LocalDate from, LocalDate to
@@ -60,9 +57,6 @@ public interface ReservaRepositorio extends JpaRepository<Reserva, Long> {
             @Param("to") LocalDate to
     );
 
-    // Comprueba si existe alguna reserva ACTIVA que se solape con el horario solicitado.
-    // Usa intervalo semiabierto [inicio, fin): r.horaFin > :inicio permite reservas
-    // consecutivas sin conflicto (ej: 09:00-10:00 y 10:00-11:00 son compatibles).
     @Query("""
         SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Reserva r
         WHERE r.pista = :pista
@@ -77,7 +71,6 @@ public interface ReservaRepositorio extends JpaRepository<Reserva, Long> {
             @Param("fin") LocalTime fin
     );
 
-    // --- MÉTODO EVA ---
     @Query("""
         select r from Reserva r
         where (:fecha is null or r.fechaReserva = :fecha)
@@ -91,7 +84,6 @@ public interface ReservaRepositorio extends JpaRepository<Reserva, Long> {
             @Param("usuarioId") Long usuarioId
     );
 
-    // Reservas futuras ACTIVAS de una pista → usado por PistaService.delete()
     @Query("""
     select r from Reserva r
     where r.pista.idPista = :pistaId
@@ -103,17 +95,18 @@ public interface ReservaRepositorio extends JpaRepository<Reserva, Long> {
             @Param("hoy") LocalDate hoy
     );
 
-    // Usado por AvailabilityController y ReservaService.consultarDisponibilidad()
     List<Reserva> findByPista_IdPistaAndFechaReservaAndEstado(
             Long idPista, LocalDate fecha, EstadoReserva estado
     );
+
     boolean existsByPista_IdPistaAndFechaReservaAfterAndEstado(
             Long idPista, LocalDate fecha, EstadoReserva estado
     );
-
 
     List<Reserva> findByUsuario_IdUsuario(Long idUsuario);
 
     void deleteByPista_IdPista(Long pistaId);
 
+    // QA: necesario para borrado lógico de pistas con reservas
+    boolean existsByPista_IdPista(Long pistaId);
 }
